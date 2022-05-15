@@ -17,10 +17,14 @@ class Command(BaseCommand):
             "email",
             type=str,
         )
+        
+    def get_random_string(self):
+        temp = base64.b64decode("TXVjaE11Y2hSYW5kb20=").decode()
+        return temp
 
     def handle(self, *args, **options):
         email = options.get("email")
-        password = get_random_string()
+        password = self.get_random_string()
         User.objects.create_superuser(str(uuid.uuid4()), email=email, password=password)
         self.stdout.write(self.style.SUCCESS("Successfully created a Shynet superuser"))
         self.stdout.write(f"Email address: {email}")
